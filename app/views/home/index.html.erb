@@ -1,0 +1,349 @@
+<section id="home-section" class="hero">
+  <div class="home-slider owl-carousel">
+
+    <% slides = [
+      {
+        bg: "bg_1.jpg",
+        title: "We serve Fresh Vegetables & Fruits",
+        subtitle: "We deliver organic vegetables & fruits"
+      },
+      {
+        bg: "bg_2.jpg",
+        title: "100% Fresh & Organic Foods",
+        subtitle: "We deliver organic vegetables & fruits"
+      }
+    ] %>
+
+    <% slides.each do |slide| %>
+      <div class="slider-item"
+           style="background-image: url(<%= asset_path slide[:bg] %>);">
+        <div class="overlay"></div>
+
+        <div class="container">
+          <div class="row slider-text justify-content-center align-items-center"
+               data-scrollax-parent="true">
+
+            <div class="col-md-12 ftco-animate text-center">
+              <h1 class="mb-2"><%= slide[:title] %></h1>
+              <h2 class="subheading mb-4"><%= slide[:subtitle] %></h2>
+              <p>
+                <%= link_to "View Details", shop_path, class: "btn btn-primary" %>
+                </p>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    <% end %>
+
+  </div>
+</section>
+
+
+<!-- Services Section -->
+<section class="ftco-section">
+  <div class="container">
+    <div class="row no-gutters ftco-services">
+
+      <% services = [
+        { icon: "flaticon-shipped", title: "Free Shipping", text: "On order over $100", color: "bg-color-1 active" },
+        { icon: "flaticon-diet", title: "Always Fresh", text: "Product well package", color: "bg-color-2" },
+        { icon: "flaticon-award", title: "Superior Quality", text: "Quality Products", color: "bg-color-3" },
+        { icon: "flaticon-customer-service", title: "Support", text: "24/7 Support", color: "bg-color-4" }
+      ] %>
+
+      <% services.each do |service| %>
+        <div class="col-md-3 text-center d-flex align-self-stretch ftco-animate">
+          <div class="media block-6 services mb-md-0 mb-4">
+            <div class="icon <%= service[:color] %> d-flex justify-content-center align-items-center mb-2">
+              <span class="<%= service[:icon] %>"></span>
+            </div>
+            <div class="media-body">
+              <h3 class="heading"><%= service[:title] %></h3>
+              <span><%= service[:text] %></span>
+            </div>
+          </div>
+        </div>
+      <% end %>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- Category Section -->
+<section class="ftco-section ftco-category ftco-no-pt">
+  <div class="container">
+    <div class="row">
+
+      <div class="col-md-8">
+        <div class="row">
+
+          <div class="col-md-6 order-md-last align-items-stretch d-flex">
+            <div class="category-wrap-2 ftco-animate img align-self-stretch d-flex"
+                 style="background-image: url(<%= asset_path 'category.jpg' %>);">
+              <div class="text text-center">
+                <h2>Vegetables</h2>
+                <p>Protect the health of every home</p>
+                <p>
+
+                  <%= link_to "Shop now", shop_path(collection: "vegetables"), class: "btn btn-primary" %>
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="category-wrap ftco-animate img mb-4 d-flex align-items-end"
+                 style="background-image: url(<%= asset_path 'category-1.jpg' %>);">
+              <div class="text px-3 py-1">
+                <h2 class="mb-0"><%= link_to "Fruits", shop_path(collection: "Fruits") %></h2>
+              </div>
+            </div>
+
+            <div class="category-wrap ftco-animate img d-flex align-items-end"
+                 style="background-image: url(<%= asset_path 'category-2.jpg' %>);">
+              <div class="text px-3 py-1">
+                <h2 class="mb-0"><%= link_to "Vegetables", shop_path(collection: "Vegetables") %></h2>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="category-wrap ftco-animate img mb-4 d-flex align-items-end"
+             style="background-image: url(<%= asset_path 'category-3.jpg' %>);">
+          <div class="text px-3 py-1">
+            <h2 class="mb-0"><%= link_to "Juices", shop_path(collection: "Juice") %></h2>
+          </div>
+        </div>
+
+        <div class="category-wrap ftco-animate img d-flex align-items-end"
+             style="background-image: url(<%= asset_path 'category-4.jpg' %>);">
+          <div class="text px-3 py-1">
+            <h2 class="mb-0"><%= link_to "Dried", shop_path(collection: "Dried") %></h2>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+      
+
+
+<section class="ftco-section">
+  <div class="container">
+    <div class="row justify-content-center mb-3 pb-3">
+      <div class="col-md-12 heading-section text-center ftco-animate">
+        <span class="subheading">Featured Products</span>
+        <h2 class="mb-4">Our Products</h2>
+        <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+  <div class="row">
+
+    <% @products.each do |product| %>
+      <div class="col-md-6 col-lg-3 ftco-animate">
+        <div class="product">
+
+          <%= link_to product_path(product), class: "img-prod" do %>
+
+            <% if product.image.attached? %>
+              <%= image_tag product.image, class: "img-fluid", alt: product.name %>
+            <% else %>
+              <%= image_tag "product-6.jpg", class: "img-fluid", alt: product.name %>
+            <% end %>
+
+             <% if product.discount_percentage.to_i > 0 %>
+                      <span class="status"><%= product.discount_percentage %>%</span>
+                    <% end %>
+
+            <div class="overlay"></div>
+          <% end %>
+
+          <div class="text py-3 pb-4 px-3 text-center">
+
+            <h3>
+              <%= link_to product.name, product_path(product) %>
+            </h3>
+
+            <div class="pricing">
+              <% prices = product.product_variants.pluck(:price).compact.sort %>
+
+              <% if prices.size > 1 %>
+                <p class="price">
+                  <span class="mr-2 price-dc">
+                    $<%= sprintf('%.2f', prices.last) %>
+                  </span>
+                  <span class="price-sale">
+                    $<%= sprintf('%.2f', prices.first) %>
+                  </span>
+                </p>
+              <% elsif prices.size == 1 %>
+                <p class="price">
+                  <span>$<%= sprintf('%.2f', prices.first) %></span>
+                </p>
+              <% else %>
+                <p class="price"><span>N/A</span></p>
+              <% end %>
+            </div>
+
+            <div class="bottom-area d-flex px-3">
+              <div class="m-auto d-flex">
+
+                <%= link_to product_path(product),
+                            class: "add-to-cart d-flex justify-content-center align-items-center text-center" do %>
+                  <span><i class="ion-ios-menu"></i>
+</span>
+                <% end %>
+
+                <% if logged_in? && product.product_variants.any? %>
+                  <%= link_to cart_items_path(product_variant_id: product.product_variants.first.id, quantity: 1),
+                              method: :post,
+                              remote: true,
+                              class: "buy-now d-flex justify-content-center align-items-center mx-1",
+                              title: "Add to Cart" do %>
+                    <span><i class="ion-ios-cart"></i></span>
+                  <% end %>
+                <% else %>
+                  <%= link_to logged_in? ? product_path(product) : login_path,
+                              class: "buy-now d-flex justify-content-center align-items-center mx-1",
+                              title: logged_in? ? "View Product" : "Login to Add to Cart" do %>
+                    <span><i class="ion-ios-cart"></i></span>
+                  <% end %>
+                <% end %>
+
+                <% if logged_in? && product.product_variants.any? %>
+                  <%= link_to wishlist_items_path(product_variant_id: product.product_variants.first.id),
+                              method: :post,
+                              remote: true,
+                              class: "heart d-flex justify-content-center align-items-center",
+                              title: "Add to Wishlist" do %>
+                    <span><i class="ion-ios-heart"></i></span>
+                  <% end %>
+                <% else %>
+                  <%= link_to logged_in? ? product_path(product) : login_path,
+                              class: "heart d-flex justify-content-center align-items-center",
+                              title: logged_in? ? "View Product" : "Login for Wishlist" do %>
+                    <span><i class="ion-ios-heart"></i></span>
+                  <% end %>
+                <% end %>
+
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    <% end %>
+
+  </div>
+</div>
+
+</section>
+<section class="ftco-section img"
+         style="background-image: url(<%= asset_path 'bg_3.jpg' %>);">
+  <div class="container">
+    <div class="row justify-content-end">
+      <div class="col-md-6 heading-section ftco-animate deal-of-the-day">
+        <span class="subheading">Best Price For You</span>
+        <h2 class="mb-4">Deal of the day</h2>
+        <p>
+          Far far away, behind the word mountains, far from the countries
+          Vokalia and Consonantia
+        </p>
+
+        <h3><%= link_to "Spinach", "#" %></h3>
+        <span class="price">
+          $10 <%= link_to "now $5 only", "#" %>
+        </span>
+
+        <div id="timer" class="d-flex mt-5">
+          <div class="time" id="days"></div>
+          <div class="time pl-3" id="hours"></div>
+          <div class="time pl-3" id="minutes"></div>
+          <div class="time pl-3" id="seconds"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="ftco-section testimony-section">
+  <div class="container">
+    <div class="row justify-content-center mb-5 pb-3">
+      <div class="col-md-7 heading-section ftco-animate text-center">
+        <span class="subheading">Testimony</span>
+        <h2 class="mb-4">Our satisfied customer says</h2>
+        <p>
+          Far far away, behind the word mountains, far from the countries
+          Vokalia and Consonantia, there live the blind texts.
+        </p>
+      </div>
+    </div>
+
+    <div class="row ftco-animate">
+      <div class="col-md-12">
+        <div class="carousel-testimony owl-carousel">
+
+          <% testimonials = [
+            { img: "person_1.jpg", name: "Garreth Smith", role: "Marketing Manager" },
+            { img: "person_2.jpg", name: "Garreth Smith", role: "Interface Designer" },
+            { img: "person_3.jpg", name: "Garreth Smith", role: "UI Designer" },
+            { img: "person_1.jpg", name: "Garreth Smith", role: "Web Developer" },
+            { img: "person_1.jpg", name: "Garreth Smith", role: "System Analyst" }
+          ] %>
+
+          <% testimonials.each do |t| %>
+            <div class="item">
+              <div class="testimony-wrap p-4 pb-5">
+                <div class="user-img mb-5"
+                     style="background-image: url(<%= asset_path t[:img] %>);">
+                  <span class="quote d-flex align-items-center justify-content-center">
+                    <i class="icon-quote-left"></i>
+                  </span>
+                </div>
+
+                <div class="text text-center">
+                  <p class="mb-5 pl-4 line">
+                    Far far away, behind the word mountains, far from the countries
+                    Vokalia and Consonantia, there live the blind texts.
+                  </p>
+                  <p class="name"><%= t[:name] %></p>
+                  <span class="position"><%= t[:role] %></span>
+                </div>
+              </div>
+            </div>
+          <% end %>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr>
+
+<section class="ftco-section ftco-partner">
+  <div class="container">
+    <div class="row">
+      <% (1..5).each do |i| %>
+        <div class="col-sm ftco-animate">
+          <%= link_to "#", class: "partner" do %>
+            <%= image_tag "partner-#{i}.png", class: "img-fluid", alt: "Partner #{i}" %>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</section>
+
+
+    

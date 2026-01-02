@@ -1,0 +1,88 @@
+<section class="ftco-section">
+  <div class="container">
+    <div class="row">
+
+      <!-- SIDEBAR -->
+      <div class="col-lg-3 sidebar ftco-animate">
+        <div class="sidebar-box">
+          <h3 class="heading">Filters</h3>
+
+          <%= form_with url: shop_path, method: :get, local: false, id: "filter-form" do |f| %>
+            <div class="form-group">
+              <label>Search Product</label>
+              <%= text_field_tag :search,
+                    params[:search],
+                    class: "form-control",
+                    placeholder: "Search by product name" %>
+            </div>
+
+            <div class="form-group">
+              <label>Collection</label>
+              <%= f.select :collection_id,
+                    options_from_collection_for_select(@collections_list, :id, :name, params[:collection_id]),
+                    { include_blank: "All Collections" },
+                    class: "form-control" %>
+            </div>
+
+            <div class="form-group">
+              <label>Price Range</label>
+              <div class="d-flex">
+                <%= f.number_field :min_price,
+                      class: "form-control mr-2",
+                      placeholder: "Min",
+                      step: 0.01,
+                      value: params[:min_price] %>
+
+                <%= f.number_field :max_price,
+                      class: "form-control",
+                      placeholder: "Max",
+                      step: 0.01,
+                      value: params[:max_price] %>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>Minimum Rating</label>
+              <%= f.select :min_rating,
+                    options_for_select([
+                      ["Any Rating", ""],
+                      ["4+ Stars", 4],
+                      ["3+ Stars", 3],
+                      ["2+ Stars", 2],
+                      ["1+ Stars", 1]
+                    ], params[:min_rating]),
+                    {},
+                    class: "form-control" %>
+            </div>
+
+            <div class="form-group">
+              <label>Minimum Discount</label>
+              <%= f.select :min_discount,
+                    options_for_select([
+                      ["Any Discount", ""],
+                      ["50% or more", 50],
+                      ["40% or more", 40],
+                      ["30% or more", 30],
+                      ["20% or more", 20],
+                      ["10% or more", 10]
+                    ], params[:min_discount]),
+                    {},
+                    class: "form-control" %>
+            </div>
+
+            <div class="form-group">
+              <%= link_to "Clear Filters", shop_path, class: "btn btn-outline-secondary btn-block clear-filters-link" %>
+            </div>
+
+          <% end %>
+        </div>
+      </div>
+
+      <!-- PRODUCTS -->
+      <div class="col-lg-9" id="products-container">
+        <%= render 'products' %>
+      </div>
+      
+      </div>
+  </div>
+</section>

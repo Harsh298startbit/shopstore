@@ -1,0 +1,10 @@
+<% if @saved %>
+  // Show success notification
+  showNotification('<%= j @message %>', 'success');
+  
+  // Update cart count if there's a cart icon
+  updateCartCount(<%= @cart.total_items %>);
+<% else %>
+  // Show error notification
+  showNotification('<%= j @message %>', 'error');
+<% end %>

@@ -1,0 +1,185 @@
+<div class="hero-wrap hero-bread" style="background-image: url('<%= asset_path("bg_1.jpg") %>');">
+  <div class="container">
+    <div class="row no-gutters slider-text align-items-center justify-content-center">
+      <div class="col-md-9 ftco-animate text-center">
+        <p class="breadcrumbs">
+          <span class="mr-2"><%= link_to "Home", root_path %></span>
+          <span>Shopping Cart</span>
+        </p>
+        <h1 class="mb-0 bread">My Cart</h1>
+      </div>
+    </div>
+  </div>
+</div>
+
+<section class="ftco-section ftco-cart">
+  <div class="container">
+    <% if @cart_items.any? %>
+      <div class="row">
+        <div class="col-md-12 ftco-animate">
+          <div class="cart-list">
+            <table class="table">
+              <thead class="thead-primary">
+                <tr class="text-center">
+                  <th>&nbsp;</th>
+                  <th>&nbsp;</th>
+                  <th>Product name</th>
+                  <th>Price</th>
+                  <th>Quantity</th>
+                  <th>Total</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                <% @cart_items.each do |item| %>
+                  <tr class="text-center" data-cart-item-id="<%= item.id %>">
+
+                    <!-- Remove -->
+                    <td class="product-remove">
+                      <%= link_to cart_item_path(item),
+                          method: :delete,
+                          data: { confirm: "Are you sure?", remote: true } do %>
+                        <span class="ion-ios-close"></span>
+                      <% end %>
+                    </td>
+
+                    <!-- Image -->
+                    <td class="image-prod">
+                      <% if item.product.image.attached? %>
+                        <div class="img"
+                          style="background-image:url('<%= url_for(item.product.image) %>');">
+                        </div>
+                      <% else %>
+                        <div class="img"
+                          style="background-image:url('<%= asset_path("product-5.jpg") %>');">
+                        </div>
+                      <% end %>
+                    </td>
+
+                    <!-- Product -->
+                    <td class="product-name">
+                      <h3><%= link_to item.product.name, product_path(item.product) %></h3>
+                      <p>
+                        <%= item.product_variant.variant_type %> :
+                        <%= item.product_variant.value %>
+                        
+                      </p>
+                      
+                    </td>
+
+                    <!-- Price -->
+                    <td class="price">
+                      $<%= sprintf('%.2f', item.product_variant.price) %>
+                    </td>
+
+                    <!-- Quantity -->
+                    <td class="quantity">
+                      <%= form_with url: cart_item_path(item),
+                            method: :patch,
+                            local: false do |f| %>
+                        <div class="input-group mb-3">
+                          <%= f.number_field :quantity,
+                                value: item.quantity,
+                                min: 1,
+                                max: item.product_variant.inventory_quantity,
+                                class: "quantity form-control input-number",
+                                onchange: "this.form.requestSubmit()" %>
+                        </div>
+                      <% end %>
+                    </td>
+
+                    <!-- Total -->
+                    <td class="total">
+                      $<%= sprintf('%.2f', item.subtotal) %>
+                    </td>
+
+                  </tr>
+                <% end %>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+<div class="row justify-content-end">
+
+  <!-- Coupon -->
+  <div class="col-lg-4 mt-5 cart-wrap ftco-animate">
+    <div class="cart-total mb-3">
+      <h3>Coupon Code</h3>
+      <p>Enter your coupon code if you have one</p>
+      <form class="info">
+        <div class="form-group">
+          <label>Coupon code</label>
+          <input type="text" class="form-control text-left px-3">
+        </div>
+      </form>
+    </div>
+    <p>
+      <a href="#" class="btn btn-primary py-3 px-4">Apply Coupon</a>
+    </p>
+  </div>
+
+  <!-- Shipping -->
+  <div class="col-lg-4 mt-5 cart-wrap ftco-animate">
+    <div class="cart-total mb-3">
+      <h3>Estimate shipping and tax</h3>
+      <p>Enter your destination</p>
+      <form class="info">
+        <div class="form-group">
+          <label>Country</label>
+          <input type="text" class="form-control px-3">
+        </div>
+        <div class="form-group">
+          <label>State</label>
+          <input type="text" class="form-control px-3">
+        </div>
+        <div class="form-group">
+          <label>Zip</label>
+          <input type="text" class="form-control px-3">
+        </div>
+      </form>
+    </div>
+    <p>
+      <a href="#" class="btn btn-primary py-3 px-4">Estimate</a>
+    </p>
+  </div>
+
+  <!-- Totals -->
+  <div class="col-lg-4 mt-5 cart-wrap ftco-animate">
+    <div class="cart-total mb-3">
+      <h3>Cart Totals</h3>
+
+      <p class="d-flex">
+        <span>Items</span>
+        <span><%= @cart.total_items %></span>
+      </p>
+
+      <p class="d-flex">
+        <span>Delivery</span>
+        <span>$0.00</span>
+      </p>
+
+      <hr>
+
+      <p class="d-flex total-price">
+        <span>Total</span>
+        <span>$<%= sprintf('%.2f', @cart.total_price) %></span>
+      </p>
+    </div>
+
+    <p>
+      <%= link_to "Proceed to Checkout",
+            "#",
+            class: "btn btn-primary py-3 px-4" %>
+    </p>
+  </div>
+</div>
+<% else %>
+  <div class="text-center py-5">
+    <h3>Your cart is empty</h3>
+    <p class="lead">Add some products to get started!</p>
+    <%= link_to "Start Shopping", shop_path,
+          class: "btn btn-primary py-3 px-5 mt-3" %>
+  </div>
+<% end %>
+</section>

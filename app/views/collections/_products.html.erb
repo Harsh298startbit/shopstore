@@ -1,0 +1,91 @@
+<div class="row mb-4">
+  <div class="col-md-12">
+    <h4><%= pluralize(@products.total_entries, "Product") %> Found</h4>
+  </div>
+</div>
+
+<div class="row">
+  <% if @products.any? %>
+    <% @products.each do |product| %>
+      <div class="col-md-6 col-lg-4 ftco-animate">
+        <div class="product">
+
+          <%= link_to product_path(product), class: "img-prod" do %>
+            <% if product.image.attached? %>
+              <%= image_tag product.image, class: "img-fluid", alt: product.name %>
+            <% else %>
+              <%= image_tag "https://via.placeholder.com/300x300?text=No+Image", class: "img-fluid" %>
+            <% end %>
+
+            <% if product.discount_percentage.to_i > 0 %>
+              <span class="status"><%= product.discount_percentage %>%</span>
+            <% end %>
+
+            <div class="overlay"></div>
+          <% end %>
+
+          <div class="text py-3 pb-4 px-3 text-center">
+            <h3><%= link_to product.name, product_path(product) %></h3>
+
+            <div class="pricing">
+              <p class="price"><span><%= product.price_range %></span></p>
+            </div>
+
+            <div class="bottom-area d-flex px-3">
+              <div class="m-auto d-flex">
+                <% if logged_in? && product.product_variants.any? %>
+                  <%= link_to cart_items_path(product_variant_id: product.product_variants.first.id, quantity: 1),
+                        method: :post,
+                        remote: true,
+                        class: "buy-now d-flex justify-content-center align-items-center mx-1",
+                        title: "Add to Cart" do %>
+                    <span><i class="ion-ios-cart"></i></span>
+                  <% end %>
+                <% else %>
+                  <%= link_to logged_in? ? product_path(product) : login_path,
+                        class: "buy-now d-flex justify-content-center align-items-center mx-1",
+                        title: logged_in? ? "View Product" : "Login to Add to Cart" do %>
+                    <span><i class="ion-ios-cart"></i></span>
+                  <% end %>
+                <% end %>
+
+                <% if logged_in? && product.product_variants.any? %>
+                  <%= link_to wishlist_items_path(product_variant_id: product.product_variants.first.id),
+                        method: :post,
+                        remote: true,
+                        class: "heart d-flex justify-content-center align-items-center",
+                        title: "Add to Wishlist" do %>
+                    <span><i class="ion-ios-heart"></i></span>
+                  <% end %>
+                <% else %>
+                  <%= link_to logged_in? ? product_path(product) : login_path,
+                        class: "heart d-flex justify-content-center align-items-center",
+                        title: logged_in? ? "View Product" : "Login for Wishlist" do %>
+                    <span><i class="ion-ios-heart"></i></span>
+                  <% end %>
+                <% end %>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    <% end %>
+  
+  <% else %>
+    <div class="col-md-12">
+      <div class="alert alert-info text-center">
+        <h4>No products found</h4>
+        <button type="button" class="btn btn-primary mt-2 clear-filters-btn">Clear Filters</button>
+      </div>
+    </div>
+  <% end %>
+</div>
+
+<div class="flickr_pagination">
+  <%= will_paginate @products,
+        previous_label: '‹',
+        next_label: '›',
+        params: { controller: 'collections', action: 'index' },
+        class: 'ajax-pagination' %>
+</div>

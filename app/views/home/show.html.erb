@@ -1,0 +1,68 @@
+<div class="container">
+  <div class="row">
+
+    <% @products.each do |product| %>
+      <% variant = product.product_variants.first %>
+
+      <div class="col-md-6 col-lg-3 ftco-animate">
+        <div class="product">
+
+          <!-- Product Image -->
+          <%= link_to "#", class: "img-prod" do %>
+            <%= image_tag(
+                  product.product_images.first&.image || "placeholder.png",
+                  class: "img-fluid",
+                  alt: product.name
+                ) %>
+
+            <% if product.on_sale %>
+              <span class="status"><%= product.sale_percentage %>%</span>
+            <% end %>
+
+            <div class="overlay"></div>
+          <% end %>
+
+          <!-- Product Details -->
+          <div class="text py-3 pb-4 px-3 text-center">
+            <h3><%= link_to product.name, "#" %></h3>
+
+            <div class="pricing">
+              <% if variant&.compare_price.present? %>
+                <p class="price">
+                  <span class="mr-2 price-dc">₹<%= variant.compare_price %></span>
+                  <span class="price-sale">₹<%= variant.sale_price %></span>
+                </p>
+              <% else %>
+                <p class="price">
+                  <span>₹<%= variant&.sale_price %></span>
+                </p>
+              <% end %>
+            </div>
+
+            <!-- Actions -->
+            <div class="bottom-area d-flex px-3">
+              <div class="m-auto d-flex">
+
+                <%= link_to "#", class: "add-to-cart d-flex justify-content-center align-items-center text-center" do %>
+                  <span><i class="ion-ios-menu"></i></span>
+                <% end %>
+
+                <%= link_to "#", class: "buy-now d-flex justify-content-center align-items-center mx-1" do %>
+                  <span><i class="ion-ios-cart"></i></span>
+                <% end %>
+
+                <%= link_to "#", class: "heart d-flex justify-content-center align-items-center" do %>
+                  <span><i class="ion-ios-heart"></i></span>
+                <% end %>
+
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+    <% end %>
+
+  </div>
+</div>

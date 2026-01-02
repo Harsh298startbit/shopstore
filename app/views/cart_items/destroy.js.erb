@@ -1,0 +1,20 @@
+// Remove the item row
+var itemRow = document.querySelector('[data-cart-item-id="<%= @cart_item.id %>"]');
+if (itemRow) {
+  itemRow.style.transition = 'opacity 0.3s';
+  itemRow.style.opacity = '0';
+  setTimeout(function() {
+    itemRow.remove();
+    
+    // Check if cart is empty
+    <% if @cart.cart_items.empty? %>
+      location.reload();
+    <% else %>
+      // Update cart totals
+      updateCartTotals(<%= @cart.total_items %>, <%= @cart.total_price %>);
+    <% end %>
+  }, 300);
+}
+
+// Show success notification
+showNotification('<%= j @message %>', 'success');

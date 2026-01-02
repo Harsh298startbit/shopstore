@@ -1,0 +1,20 @@
+// Remove wishlist item from the page
+var wishlistItem = document.querySelector('[data-wishlist-item-id="<%= @wishlist_item.id %>"]');
+if (wishlistItem) {
+  wishlistItem.style.transition = 'opacity 0.3s';
+  wishlistItem.style.opacity = '0';
+  setTimeout(function() {
+    wishlistItem.remove();
+    
+    // Check if wishlist is empty
+    <% if current_user.wishlist_items.empty? %>
+      location.reload();
+    <% end %>
+  }, 300);
+}
+
+// Show notification
+showNotification('<%= j @message %>', 'success');
+
+// Update wishlist count
+updateWishlistCount();

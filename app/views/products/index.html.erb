@@ -1,0 +1,26 @@
+<h1>Products</h1>
+
+<%= link_to 'New Product', new_product_path, class: 'btn' %>
+
+<div class="products-grid">
+  <% @products.each do |product| %>
+    <div class="product-card">
+      <% if product.image.attached? %>
+        <%= image_tag product.image, width: 200 %>
+      <% end %>
+
+      <h3><%= link_to product.name, product %></h3>
+
+      <p><%= product.price_range %></p>
+      <p>Rating: <%= product.average_rating %> ⭐</p>
+
+      <p>
+        <% if product.in_stock? %>
+          <strong>In Stock</strong>
+        <% else %>
+          <span style="color:red;">Out of Stock</span>
+        <% end %>
+      </p>
+    </div>
+  <% end %>
+</div>
