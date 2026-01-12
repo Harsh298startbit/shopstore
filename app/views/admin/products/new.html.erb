@@ -1,0 +1,9 @@
+<%= javascript_pack_tag "product_variants", "data-turbolinks-track": "reload" %>
+
+<h1 class="mb-4 container text-center">New Product</h1>
+
+<%= render 'form_errors', object: @product %>
+
+<%= form_with model: @product, local: true do |f| %>
+  <%= render 'form', f: f %>
+<% end %>

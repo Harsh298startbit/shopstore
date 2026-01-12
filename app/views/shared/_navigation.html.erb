@@ -30,7 +30,9 @@
 	      <div class="collapse navbar-collapse" id="ftco-nav">
 	        <ul class="navbar-nav ml-auto">
 	          <li class="nav-item active"> <%= link_to "Home", root_path, class: "nav-link" %></li>
-	          <li class="nav-item dropdown">
+	                <% if !current_user.admin? %>
+	          
+			  <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" href="#" id="dropdown04" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Shop</a>
               <div class="dropdown-menu" aria-labelledby="dropdown04">
                   <%= link_to "Vegetables", shop_path(collection: "vegetables"), class: "dropdown-item" %>
@@ -44,18 +46,24 @@
 	           <li class="nav-item"><%= link_to "About", pages_about_path, class: "nav-link" %></li>
 	          <li class="nav-item"><%= link_to "Blog", pages_blog_path, class: "nav-link" %></li>
 	          <li class="nav-item"><%= link_to "Contact", pages_contact_path, class: "nav-link" %></li>
-	          
+	          <% end %>
 	          <% if logged_in? %>
 	            <li class="nav-item dropdown">
 	              <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">
 	                <%= current_user.name %>
 	              </a>
 	              <div class="dropdown-menu">
+	                <%= link_to "My Orders", orders_path, class: "dropdown-item" %>
+	                <%= link_to "Wishlist", wishlist_items_path, class: "dropdown-item" %>
 	                <%= link_to "My Cart", cart_path, class: "dropdown-item" %>
-					<% if logged_in? %>
-                  <%= link_to "Wishlist", wishlist_items_path, class: "dropdown-item" %>
-                  <%= link_to "My Cart", cart_path, class: "dropdown-item" %>
-                <% end %>
+	                <% if current_user.admin? %>
+	                  <div class="dropdown-divider"></div>
+	                  <%= link_to "Admin Dashboard", admin_root_path, class: "dropdown-item text-danger font-weight-bold" %>
+	                  <%= link_to "Manage Users", admin_users_path, class: "dropdown-item" %>
+	                  <%= link_to "Manage Products", admin_products_path, class: "dropdown-item" %>
+	                  <%= link_to "Manage Orders", admin_orders_path, class: "dropdown-item" %>
+	                  <div class="dropdown-divider"></div>
+	                <% end %>
 	                <%= link_to "Logout", logout_path, method: :delete, class: "dropdown-item" %>
 	              </div>
 	            </li>

@@ -1,0 +1,30 @@
+<div class="variant-fields border rounded p-3 mb-3 bg-light">
+  <div class="row">
+    <div class="col-md-3">
+      <%= f.label :variant_type, "Variant Type", class: "form-label" %>
+      <%= f.text_field :variant_type, class: "form-control", placeholder: "e.g. Size, Color, Weight" %>
+    </div>
+
+    <div class="col-md-3">
+      <%= f.label :value, "Value", class: "form-label" %>
+      <%= f.text_field :value, class: "form-control", placeholder: "e.g. Small, Red, 1kg" %>
+    </div>
+
+    <div class="col-md-2">
+      <%= f.label :price, "Price ($)", class: "form-label" %>
+      <%= f.number_field :price, step: 1, class: "form-control", placeholder: "0.00" %>
+    </div>
+
+    <div class="col-md-2">
+      <%= f.label :inventory_quantity, "Stock", class: "form-label" %>
+      <%= f.number_field :inventory_quantity, class: "form-control", placeholder: "0" %>
+    </div>
+
+    <div class="col-md-2 d-flex align-items-end">
+      <%= f.hidden_field :_destroy %>
+      <button type="button" class="btn btn-danger remove-variant w-100">
+        <i class="ion-ios-trash"></i> Remove
+      </button>
+    </div>
+  </div>
+</div>

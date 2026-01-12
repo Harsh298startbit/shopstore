@@ -1,4 +1,6 @@
 class SessionsController < ApplicationController
+  before_action :redirect_if_logged_in, only: [:new, :create]
+
   def new
   end
 
@@ -10,7 +12,7 @@ class SessionsController < ApplicationController
       @message = "Logged in successfully!"
       
       respond_to do |format|
-        format.html { redirect_to root_path, notice: @message }
+        format.html { redirect_to user.admin? ? admin_root_path : root_path, notice: @message }
         format.js
       end
     else
@@ -30,5 +32,13 @@ class SessionsController < ApplicationController
   def destroy
     session[:user_id] = nil
     redirect_to root_path, notice: "Logged out successfully!"
+  end
+
+  private
+
+  def redirect_if_logged_in
+    if logged_in?
+      redirect_to root_path, notice: "You are already logged in!"
+    end
   end
 end
