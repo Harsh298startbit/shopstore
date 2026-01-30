@@ -1,0 +1,132 @@
+<section class="ftco-section">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-md-8">
+        <div class="card">
+          <div class="card-header bg-primary text-white">
+            <h4 class="mb-0">
+              <i class="icon-message"></i> Chat Support
+            </h4>
+          </div>
+          <div class="card-body">
+            <div id="chat-messages" class="chat-messages-container mb-3" style="height: 400px; overflow-y: auto; border: 1px solid #ddd; padding: 15px; border-radius: 5px; background-color: #f8f9fa;">
+              <% if @messages.any? %>
+                <% @messages.each do |message| %>
+                  <%= render partial: 'messages/message', locals: { message: message } %>
+                <% end %>
+              <% else %>
+                <p class="text-muted text-center">No messages yet. Start a conversation!</p>
+              <% end %>
+            </div>
+            
+            <form id="chat-form" action="<%= messages_path %>" method="post">
+              <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+              <%= hidden_field_tag 'message[user_id]', current_user.id %>
+              <div class="input-group">
+                <textarea 
+                  name="message[content]" 
+                  id="message-content"
+                  class="form-control" 
+                  rows="2" 
+                  placeholder="Type your message..." 
+                  required></textarea>
+                <div class="input-group-append">
+                  <button type="submit" class="btn btn-primary" style="height: 100%;">Send</button>
+                </div>
+              </div>
+            </form>
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const chatForm = document.getElementById('chat-form');
+  const messageContent = document.getElementById('message-content');
+  
+  if (chatForm) {
+    chatForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      const content = messageContent.value.trim();
+      if (!content) return;
+      
+      const userId = document.querySelector('input[name="message[user_id]"]').value;
+      const authenticityToken = document.querySelector('input[name="authenticity_token"]').value;
+      
+      fetch('<%= messages_path %>', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+          'X-CSRF-Token': authenticityToken
+        },
+        body: new URLSearchParams({
+          'authenticity_token': authenticityToken,
+          'message[user_id]': userId,
+          'message[content]': content
+        })
+      })
+      .then(response => {
+        if (response.ok) {
+          messageContent.value = '';
+          // Don't reload - Action Cable will receive the message via broadcast
+        }
+      })
+      .catch(error => {
+        console.error('Error sending message:', error);
+      });
+    });
+  }
+});
+</script>
+<style>
+  .chat-messages-container {
+    background-color: #f8f9fa;
+  }
+  
+  .message {
+    margin-bottom: 15px;
+    padding: 10px;
+    border-radius: 8px;
+    max-width: 80%;
+    animation: fadeIn 0.3s ease-in;
+  }
+  
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  
+  .customer-message {
+    background-color: #e3f2fd;
+    margin-left: auto;
+    margin-right: 0;
+  }
+  
+  .admin-message {
+    background-color: #fff3e0;
+    margin-right: auto;
+    margin-left: 0;
+  }
+  
+  .message-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 5px;
+    font-size: 0.85rem;
+  }
+  
+  .message-time {
+    color: #666;
+    font-size: 0.75rem;
+  }
+  
+  .message-content {
+    font-size: 0.95rem;
+    word-wrap: break-word;
+  }
+</style>

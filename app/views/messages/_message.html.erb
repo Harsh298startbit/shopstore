@@ -1,0 +1,9 @@
+<div class="message <%= message.sent_by_admin ? 'admin-message' : 'customer-message' %>" data-message-id="<%= message.id %>">
+  <div class="message-header">
+    <strong><%= message.sender_name %></strong>
+    <span class="message-time"><%= message.created_at.strftime("%b %d at %I:%M %p") %></span>
+  </div>
+  <div class="message-content">
+    <%= message.content %>
+  </div>
+</div>

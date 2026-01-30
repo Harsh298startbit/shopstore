@@ -33,26 +33,30 @@ Rails.application.configure do
   end
 
   # Store uploaded files on the local file system (see config/storage.yml for options).
-  config.active_storage.service = :local
+  # For development, you can use either local or cloudinary
+  # To use Cloudinary, uncomment the line below and ensure .env has Cloudinary credentials
+  config.active_storage.service = :cloudinary
+  # config.active_storage.service = :local
 
   # Don't care if the mailer can't send.
   config.action_mailer.raise_delivery_errors = true
 
   config.action_mailer.perform_caching = false
-  
+  config.action_cable.url = "ws://localhost:3000/cable"
+config.action_cable.allowed_request_origins = ['http://localhost:3000', 'http://127.0.0.1:3000']
   # Action Mailer settings for development
   config.action_mailer.delivery_method = :smtp
   config.action_mailer.default_url_options = { host: ENV['MAILER_HOST'] || 'localhost:3000' }
   
-  # config.action_mailer.smtp_settings = {
-  #   address:              'smtp.gmail.com',
-  #   port:                 587,
-  #   domain:               'gmail.com',
-  #   user_name:            'kukrejah661@gmail.com',
-  #   password:             'arpfnhrbypddmbbt',
-  #   authentication:       'plain',
-  #   enable_starttls_auto: true
-  # }
+  config.action_mailer.smtp_settings = {
+    address:              'smtp.gmail.com',
+    port:                 587,
+    domain:               'gmail.com',
+    user_name:            'kukrejah661@gmail.com',
+    password:             'arpfnhrbypddmbbt',
+    authentication:       'plain',
+    enable_starttls_auto: true
+  }
 
   # Print deprecation notices to the Rails logger.
   config.active_support.deprecation = :log

@@ -6,6 +6,9 @@
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
     
+    <!-- Stripe Publishable Key -->
+    <meta name="stripe-publishable-key" content="<%= Rails.configuration.stripe[:publishable_key] %>">
+    
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="/shopping.png">
     
@@ -16,6 +19,9 @@
     <%= javascript_pack_tag "product_cart", "data-turbolinks-track": "reload" %>
     <%= javascript_pack_tag "cart_operations", "data-turbolinks-track": "reload" %>
     <%= javascript_pack_tag "shop_filters", "data-turbolinks-track": "reload" %>
+    
+    <!-- Stripe.js -->
+    <script src="https://js.stripe.com/v3/"></script>
 
   </head>
 

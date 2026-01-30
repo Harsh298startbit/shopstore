@@ -1,6 +1,9 @@
 class ApplicationController < ActionController::Base
   helper_method :current_user, :logged_in?, :current_cart
 
+  # Store user_id in encrypted cookies for Action Cable
+  after_action :set_cable_identifier
+
   private
 
   def current_user
@@ -15,6 +18,12 @@ class ApplicationController < ActionController::Base
     unless logged_in?
       flash[:alert] = "You must be logged in to access this page"
       redirect_to login_path
+    end
+  end
+  
+  def require_admin
+    unless current_user&.admin?
+      redirect_to root_path, alert: "Access denied. Admin privileges required."
     end
   end
 
@@ -32,5 +41,10 @@ class ApplicationController < ActionController::Base
     else
       nil
     end
+  end
+  
+  # Set encrypted cookie for Action Cable authentication
+  def set_cable_identifier
+    cookies.encrypted[:user_id] = current_user&.id
   end
 end

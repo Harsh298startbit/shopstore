@@ -30,4 +30,24 @@ class UserMailer < ApplicationMailer
       subject: 'Thanks for Subscribing!'
     )
   end
+  
+  def order_confirmation(order)
+    @order = order
+    @user = order.user  # ✅ Set @user from order relationship
+    
+    mail(
+      to: @order.email,  # Sends to shipping email
+      subject: "Order Confirmation - #{@order.order_number}"
+    )
+  end
+  
+  def payment_receipt(order)
+    @order = order
+    @user = order.user  # ✅ Set @user from order relationship
+    
+    mail(
+      to: @order.email,  # Sends to shipping email
+      subject: "Payment Receipt - #{@order.order_number}"
+    )
+  end
 end

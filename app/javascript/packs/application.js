@@ -6,6 +6,7 @@ import * as ActiveStorage from "@rails/activestorage"
 Rails.start()
 Turbolinks.start()
 ActiveStorage.start()
+require("channels")
 
 // ----------------------------
 // jQuery (MUST BE FIRST)
@@ -47,6 +48,11 @@ console.log("owlCarousel available:", typeof $.fn.owlCarousel === 'function')
 console.log("waypoint available:", typeof $.fn.waypoint === 'function')
 
 require("../src/main")
+
+// ----------------------------
+// Stripe Checkout
+// ----------------------------
+require("../src/stripe_checkout")
 
 // ----------------------------
 // Custom JS (LAST)
