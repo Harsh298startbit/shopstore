@@ -3,7 +3,6 @@ import consumer from "./consumer"
 document.addEventListener('DOMContentLoaded', function() {
   const userId = document.querySelector('input[name="message[user_id]"]')?.value;
   
-  if (!userId) return;
   
   consumer.subscriptions.create(
     {

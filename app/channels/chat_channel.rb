@@ -1,17 +1,13 @@
 class ChatChannel < ApplicationCable::Channel
   def subscribed
-    user = User.find_by(id: params[:user_id])
-    if user
-      stream_from "chat_#{user.id}"
-    else
-      reject
-    end
+    user_id = params[:user_id]
+    stream_from "chat_#{user_id}"
+    logger.info "User subscribed to chat_#{user_id}"
   end
 
   def unsubscribed
     stop_all_streams
   end
-  
   def receive(data)
     user = User.find_by(id: data['user_id'])
     return unless user

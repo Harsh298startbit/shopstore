@@ -4,12 +4,18 @@ Rails.application.routes.draw do
   get 'pages/contact'
   post 'pages/contact', to: 'pages#contact_submit'
   post 'subscribe', to: 'pages#subscribe'
+  
   # Authentication routes
   get 'signup', to: 'users#new'
   post 'signup', to: 'users#create'
   get 'login', to: 'sessions#new'
   post 'login', to: 'sessions#create'
   delete 'logout', to: 'sessions#destroy'
+  
+  # OmniAuth routes - These should be BEFORE admin routes
+  get '/auth/:provider/callback', to: 'sessions#omniauth'
+  post '/auth/:provider/callback', to: 'sessions#omniauth'
+  get '/auth/failure', to: 'sessions#omniauth_failure'
   
   # Admin routes
   namespace :admin do
@@ -35,13 +41,11 @@ Rails.application.routes.draw do
     get 'checkout', on: :member
     get 'payment_intent', on: :member
   end
-  # post 'payments', to: 'payments#create'
-  # post 'webhooks/stripe', to: 'payments#webhook'
   
-  get 'payments/success', to: 'payments#success'  # New route for Stripe redirect
-post 'webhooks/stripe', to: 'payments#webhook' 
+  get 'payments/success', to: 'payments#success'
+  post 'webhooks/stripe', to: 'payments#webhook'
 
- resources :messages, only: [:index, :show, :create]
+  resources :messages, only: [:index, :show, :create]
   get 'chat', to: 'messages#chat', as: :chat
   
   # Mount Action Cable
@@ -55,5 +59,4 @@ post 'webhooks/stripe', to: 'payments#webhook'
   get 'home/index'
   get 'home/show'
   get 'home/new'
-  # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
 end

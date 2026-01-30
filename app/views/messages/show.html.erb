@@ -82,34 +82,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
   
-  // Subscribe to Action Cable for real-time updates
-  if (typeof consumer !== 'undefined' && chatUserId) {
-    consumer.subscriptions.create(
-      {
-        channel: "ChatChannel",
-        user_id: chatUserId
-      },
-      {
-        connected() {
-          console.log('Connected to chat channel for user:', chatUserId);
-        },
-
-        disconnected() {
-          console.log('Disconnected from chat channel');
-        },
-
-        received(data) {
-          console.log('Received message:', data);
-          
-          const chatMessages = document.getElementById('chat-messages');
-          if (chatMessages && data.message_html) {
-            chatMessages.insertAdjacentHTML('beforeend', data.message_html);
-            chatMessages.scrollTop = chatMessages.scrollHeight;
-          }
-        }
-      }
-    );
-  }
+  
 });
 </script>
 
