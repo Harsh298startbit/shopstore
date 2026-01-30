@@ -32,9 +32,11 @@ class MessagesController < ApplicationController
     
     if current_user.admin?
       @message.admin_id = current_user.id
+      @message.user_id = @chat_user.id
       @message.sent_by_admin = true
     else
       @message.user_id = current_user.id
+      @message.admin_id = User.where(is_admin: true).first&.id
       @message.sent_by_admin = false
     end
     
@@ -64,6 +66,6 @@ class MessagesController < ApplicationController
   private
   
   def message_params
-    params.require(:message).permit(:content, :user_id)
+    params.require(:message).permit(:content, :user_id , :admin_id)
   end
 end
