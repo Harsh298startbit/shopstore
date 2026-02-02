@@ -1,5 +1,5 @@
 class User < ApplicationRecord
-  has_secure_password validations: false
+  has_secure_password
   
   has_many :carts, dependent: :destroy
   has_many :orders, dependent: :destroy
@@ -10,30 +10,9 @@ class User < ApplicationRecord
   
   validates :email, presence: true, uniqueness: { case_sensitive: false }, 
             format: { with: URI::MailTo::EMAIL_REGEXP }
-  # Only validate password for non-OAuth users
-  validates :password, length: { minimum: 6 }, if: -> { password.present? }
-  validates :password, presence: true, if: -> { provider.blank? && new_record? }
+  validates :password, presence: true, length: { minimum: 6 }, on: :create
   
   before_save :downcase_email
-  
-  # OAuth: Create user from Google authentication
-  def self.from_omniauth(auth)
-    where(provider: auth.provider, uid: auth.uid).first_or_create do |user|
-      user.email = auth.info.email
-      user.name = auth.info.name
-      user.image = auth.info.image
-      user.provider = auth.provider
-      user.uid = auth.uid
-      # Set a random password for OAuth users (required by has_secure_password)
-      user.password = SecureRandom.hex(15)
-      user.password_confirmation = user.password
-    end
-  end
-  
-  # Check if user signed up with OAuth
-  def oauth_user?
-    provider.present? && uid.present?
-  end
   
   def admin?
     is_admin == true
