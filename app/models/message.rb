@@ -9,11 +9,11 @@ class Message < ApplicationRecord
   scope :for_conversation, ->(user_id) { where(user_id: user_id).order(created_at: :asc) }
   
   after_create_commit :broadcast_message
-  
+
   def sender
     sent_by_admin ? admin : user
   end
-  
+
   def sender_name
     sent_by_admin ? (admin&.name || "Admin") : user.name
   end
@@ -21,7 +21,7 @@ class Message < ApplicationRecord
   private
   
   def broadcast_message
-    # Broadcast to the specific user's channel
+    # Broadcast to the user's specific channel (e.g., chat_5)
     ActionCable.server.broadcast(
       "chat_#{user_id}",
       {

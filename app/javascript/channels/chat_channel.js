@@ -1,6 +1,6 @@
 import consumer from "./consumer"
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('turbolinks:load', function() {
   const userId = document.querySelector('input[name="message[user_id]"]')?.value;
   
   

@@ -32,7 +32,7 @@ class MessagesController < ApplicationController
     
     if current_user.admin?
       @message.admin_id = current_user.id
-      @message.user_id = @chat_user.id
+      # @message.user_id = @chat_user.id
       @message.sent_by_admin = true
     else
       @message.user_id = current_user.id

@@ -66,15 +66,13 @@
   </div>
 </div>
 
-<%- content_for :javascript do %>
 <script>
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('turbo:load', function() {
   const variantsContainer = document.getElementById('variants-container');
   const addButton = document.getElementById('add-variant-button');
-  
-  if (!addButton) return;
-  
-  // Add new variant
+
+  if (!addButton || !variantsContainer) return;
+
   addButton.addEventListener('click', function() {
     const timestamp = new Date().getTime();
     const newVariantHtml = `
@@ -82,53 +80,42 @@ document.addEventListener('DOMContentLoaded', function() {
         <div class="row">
           <div class="col-md-3">
             <label class="form-label">Variant Type</label>
-            <input type="text" name="product[product_variants_attributes][${timestamp}][variant_type]" class="form-control" placeholder="e.g. Size, Color, Weight">
+            <input type="text" name="product[product_variants_attributes][${timestamp}][variant_type]" class="form-control">
           </div>
-          
+
           <div class="col-md-3">
             <label class="form-label">Value</label>
-            <input type="text" name="product[product_variants_attributes][${timestamp}][value]" class="form-control" placeholder="e.g. Small, Red, 1kg">
+            <input type="text" name="product[product_variants_attributes][${timestamp}][value]" class="form-control">
           </div>
-          
+
           <div class="col-md-2">
             <label class="form-label">Price ($)</label>
-            <input type="number" step="0.01" name="product[product_variants_attributes][${timestamp}][price]" class="form-control" placeholder="0.00">
+            <input type="number" step="0.01" name="product[product_variants_attributes][${timestamp}][price]" class="form-control">
           </div>
-          
+
           <div class="col-md-2">
             <label class="form-label">Stock</label>
-            <input type="number" name="product[product_variants_attributes][${timestamp}][inventory_quantity]" class="form-control" placeholder="0">
+            <input type="number" name="product[product_variants_attributes][${timestamp}][inventory_quantity]" class="form-control">
           </div>
-          
+
           <div class="col-md-2 d-flex align-items-end">
             <button type="button" class="btn btn-danger btn-sm remove-variant-btn w-100">
-              <i class="ion-ios-trash"></i> Remove
+              Remove
             </button>
           </div>
         </div>
       </div>
     `;
-    
+
     variantsContainer.insertAdjacentHTML('beforeend', newVariantHtml);
   });
-  
-  // Remove variant (using event delegation)
+
   variantsContainer.addEventListener('click', function(e) {
     const removeBtn = e.target.closest('.remove-variant-btn');
-    if (removeBtn) {
-      const variantGroup = removeBtn.closest('.variant-field-group');
-      const destroyInput = variantGroup.querySelector('input[name*="_destroy"]');
-      
-      if (destroyInput) {
-        // For existing variants, mark for destruction
-        destroyInput.value = '1';
-        variantGroup.style.display = 'none';
-      } else {
-        // For new variants, just remove from DOM
-        variantGroup.remove();
-      }
-    }
+    if (!removeBtn) return;
+
+    const variantGroup = removeBtn.closest('.variant-field-group');
+    variantGroup.remove();
   });
 });
 </script>
-<%- end %>
