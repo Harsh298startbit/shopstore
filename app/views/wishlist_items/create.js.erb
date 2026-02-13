@@ -1,0 +1,10 @@
+<% if @success %>
+  // Show success notification
+  showNotification('<%= j @message %>', 'success');
+  
+  // Update wishlist count if exists
+  updateWishlistCount();
+<% else %>
+  // Show error/info notification
+  showNotification('<%= j @message %>', 'info');
+<% end %>

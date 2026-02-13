@@ -1,0 +1,14 @@
+// Update the subtotal for this item
+var itemRow = document.querySelector('[data-cart-item-id="<%= @cart_item.id %>"]');
+if (itemRow) {
+  var totalCell = itemRow.querySelector('.total');
+  if (totalCell) {
+    totalCell.innerHTML = '$<%= sprintf("%.2f", @cart_item.subtotal) %>';
+  }
+}
+
+// Update cart totals
+updateCartTotals(<%= @cart.total_items %>, <%= @cart.total_price %>);
+
+// Show success notification
+showNotification('<%= j @message %>', 'success');

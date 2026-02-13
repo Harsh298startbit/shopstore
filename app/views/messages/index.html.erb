@@ -1,0 +1,53 @@
+<section class="ftco-section">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <h2 class="mb-4">Customer Conversations</h2>
+        
+        <div class="table-responsive">
+          <table class="table table-hover">
+            <thead class="thead-primary">
+              <tr>
+                <th>Customer</th>
+                <th>Email</th>
+                <th>Messages</th>
+                <th>Last Activity</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% @conversations.each do |user| %>
+                <% message_count = user.messages.count %>
+                <% last_message = user.messages.order(created_at: :desc).first %>
+                <% unread_count = user.messages.unread.where(sent_by_admin: false).count %>
+                
+                <tr>
+                  <td><%= user.name %></td>
+                  <td><%= user.email %></td>
+                  <td>
+                    <%= message_count %>
+                    <% if unread_count > 0 %>
+                      <span class="badge badge-danger"><%= unread_count %> New</span>
+                    <% end %>
+                  </td>
+                  <td>
+                    <%= last_message&.created_at&.strftime("%b %d, %Y %I:%M %p") || 'No messages' %>
+                  </td>
+                  <td>
+                    <%= link_to 'View Chat', message_path(user), class: 'btn btn-sm btn-primary' %>
+                  </td>
+                </tr>
+              <% end %>
+              
+              <% if @conversations.empty? %>
+                <tr>
+                  <td colspan="5" class="text-center text-muted">No customer conversations yet</td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,133 @@
+<div class="hero-wrap hero-bread" style="background-image: url('<%= asset_path("bg_1.jpg") %>');">
+  <div class="container">
+    <div class="row no-gutters slider-text align-items-center justify-content-center">
+      <div class="col-md-9 ftco-animate text-center">
+        <p class="breadcrumbs">
+          <span class="mr-2"><%= link_to "Home", root_path %></span>
+          <span>Wishlist</span>
+        </p>
+        <h1 class="mb-0 bread">My Wishlist</h1>
+      </div>
+    </div>
+  </div>
+</div>
+
+<section class="ftco-section ftco-cart">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12 ftco-animate">
+        
+        <% if @wishlist_items.any? %>
+          <div class="cart-list">
+            <table class="table">
+              <thead class="thead-primary">
+                <tr class="text-center">
+                  <th>&nbsp;</th>
+                  <th>&nbsp;</th>
+                  <th>Product Details</th>
+                  <th>Variant</th>
+                  <th>Price</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% @wishlist_items.each do |item| %>
+                  <tr class="text-center" data-wishlist-item-id="<%= item.id %>">
+                    
+                    <!-- REMOVE BUTTON -->
+                    <td class="product-remove">
+                      <%= link_to wishlist_item_path(item),
+                            method: :delete,
+                            remote: true,
+                            data: { confirm: "Remove from wishlist?" },
+                            title: "Remove from wishlist" do %>
+                        <span class="ion-ios-close"></span>
+                      <% end %>
+                    </td>
+                    
+                    <!-- PRODUCT IMAGE -->
+                    <td class="image-prod">
+                      <%= link_to product_path(item.product) do %>
+                        <% if item.product.image.attached? %>
+                          <div class="img" style="background-image:url(<%= url_for(item.product.image) %>);"></div>
+                        <% else %>
+                          <div class="img" style="background-image:url(<%= asset_path('product-6.jpg') %>);"></div>
+                        <% end %>
+                      <% end %>
+                    </td>
+                    
+                    <!-- PRODUCT NAME & DESCRIPTION -->
+                    <td class="product-name">
+                      <h3><%= link_to item.product.name, product_path(item.product) %></h3>
+                      <p><%= truncate(item.product.description, length: 80) %></p>
+                    </td>
+                    
+                    <!-- VARIANT INFO -->
+                    <td class="variant">
+                      <span class="d-block"><%= item.product_variant.variant_type %></span>
+                      <strong><%= item.product_variant.value %></strong>
+                    </td>
+                    
+                    <!-- PRICE -->
+                    <td class="price">
+                      $<%= sprintf('%.2f', item.product_variant.price) %>
+                    </td>
+                    
+                    <!-- ADD TO CART BUTTON -->
+                    <td class="actions">
+                      <%= link_to cart_items_path(
+                            product_variant_id: item.product_variant_id, 
+                            quantity: 1
+                          ),
+                          method: :post,
+                          remote: true,
+                          class: "btn btn-primary py-2 px-3",
+                          title: "Add to Cart" do %>
+                        <i class="ion-ios-cart mr-1"></i> Add to Cart
+                      <% end %>
+                      
+                      <br>
+                      
+                      <%= link_to product_path(item.product), 
+                          class: "btn btn-outline-dark py-2 px-3 mt-2",
+                          title: "View Product" do %>
+                        <i class="ion-ios-eye mr-1"></i> View
+                      <% end %>
+                    </td>
+                    
+                  </tr>
+                <% end %>
+              </tbody>
+            </table>
+          </div>
+          
+          <!-- WISHLIST SUMMARY -->
+          <div class="row justify-content-between mt-5">
+            <div class="col-md-6">
+              <p class="lead">
+                <strong><%= @wishlist_items.count %></strong> items in your wishlist
+              </p>
+            </div>
+            <div class="col-md-6 text-right">
+              <%= link_to "Continue Shopping", shop_path, class: "btn btn-primary py-3 px-4" %>
+              
+              
+            </div>
+          </div>
+          
+        <% else %>
+          <!-- EMPTY WISHLIST -->
+          <div class="text-center py-5">
+            <div class="mb-4">
+              <i class="ion-ios-heart" style="font-size: 100px; color: #ccc;"></i>
+            </div>
+            <h3>Your wishlist is empty</h3>
+            <p class="lead text-muted">Save items you love for later!</p>
+            <%= link_to "Start Shopping", shop_path, class: "btn btn-primary py-3 px-5 mt-3" %>
+          </div>
+        <% end %>
+        
+      </div>
+    </div>
+  </div>
+</section>
