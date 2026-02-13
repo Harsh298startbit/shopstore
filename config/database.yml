@@ -22,7 +22,7 @@ test:
 
 production:
   <<: *default
-   database: shopstore_rpkt
+  database: shopstore_rpkt
   username: shopstore_rpkt_user
   password: E2JQrTFfIjPBDpSIZKvuB7GQEbbaCyVH
  
