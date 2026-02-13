@@ -22,7 +22,7 @@ test:
 
 production:
   <<: *default
-  database: ecommerce_3d0l
-  username: ecommerce_3d0l_user
-  password: umXEc1AhVxilpHwoONYBqOaeBLDghOrL
+   database: shopstore_rpkt
+  username: shopstore_rpkt_user
+  password: E2JQrTFfIjPBDpSIZKvuB7GQEbbaCyVH
  
